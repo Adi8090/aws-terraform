@@ -1,9 +1,8 @@
 name: 'Terraform AWS Deploy'
 
 on:
-  push:
-    branches:
-      - main
+  # ✅ Manual Trigger Added
+  workflow_dispatch
 
 permissions:
   id-token: write # Required for requesting the OIDC token
