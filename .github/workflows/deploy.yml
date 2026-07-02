@@ -1,8 +1,9 @@
 name: 'Terraform AWS Deploy'
 
 on:
-  # ✅ Manual Trigger Added
-  workflow_dispatch
+  push:
+    branches:
+      - main
 
 permissions:
   id-token: write # Required for requesting the OIDC token
@@ -12,7 +13,8 @@ jobs:
   terraform:
     name: 'Terraform Plan & Apply'
     runs-on: ubuntu-latest
-
+    
+    # Maps your GitHub password secret directly to a Terraform variable
     env:
       TF_VAR_vm_password: ${{ secrets.VM_PASSWORD }}
 
@@ -23,8 +25,8 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::572556120615:role/Git_admin
-          aws-region: us-east-1 # Make sure this matches your provider.tf region
+          role-to-assume: arn:aws:iam::YOUR_AWS_ACCOUNT_ID:role/GitHubActions-Terraform-Role # Double check this ARN string!
+          aws-region: ap-south-1
 
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
