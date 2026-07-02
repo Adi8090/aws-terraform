@@ -1,0 +1,39 @@
+name: 'Terraform AWS Deploy'
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write # Required for requesting the OIDC token
+  contents: read  # Required for checking out the code
+
+jobs:
+  terraform:
+    name: 'Terraform Plan & Apply'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::572556120615:role/Git_admin
+          aws-region: us-east-1 # Make sure this matches your provider.tf region
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.7.0"
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
