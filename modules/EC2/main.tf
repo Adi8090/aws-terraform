@@ -1,11 +1,10 @@
-# Dynamically fetch the latest Ubuntu 22.04 AMI
 data "aws_ami" "ubuntu" {
   most_recent = true
   owners      = ["099720109477"]
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-arm64-server-*"] 
   }
 }
 
@@ -15,7 +14,6 @@ resource "aws_instance" "this" {
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.security_group_id]
 
-  # EXACT FIX: Forces standard credits to comply with strict Free Tier API limits
   credit_specification {
     cpu_credits = "standard"
   }
