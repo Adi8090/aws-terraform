@@ -32,6 +32,13 @@ jobs:
         with:
           terraform_version: "1.7.0"
 
+        # ADD THIS DEBUG STEP:
+      - name: Ask AWS what is Free Tier Eligible
+        run: aws ec2 describe-instance-types --filters Name=free-tier-eligible,Values=true --query "InstanceTypes[*].InstanceType" --region ap-south-1
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Init
         run: terraform init
 
