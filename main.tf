@@ -20,10 +20,8 @@ module "ec2" {
   source            = "./modules/EC2"
   subnet_id         = module.subnet.subnet_id
   security_group_id = module.security_group.sg_id
-  instance_type     = "t2.micro"
+  instance_type     = "t3.micro" # <--- Change this to t3.micro
   instance_name     = "ubuntu-web-server"
-  
-  # Pass the password from the root variable into the module
   vm_password       = var.vm_password 
 }
 
