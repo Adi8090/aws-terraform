@@ -21,7 +21,7 @@ module "ec2" {
   subnet_id         = module.subnet.subnet_id
   security_group_id = module.security_group.sg_id
   
-  instance_type     = "t4g.micro" 
+  instance_type     = "t3.micro" 
   
   instance_name     = "ubuntu-web-server"
   vm_password       = var.vm_password 
