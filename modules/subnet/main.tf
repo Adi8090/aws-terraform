@@ -22,11 +22,15 @@ variable "map_public_ip_on_launch" {
 }
 
 resource "aws_subnet" "this" {
+  count                   = length(var.subnet_cidrs)
   vpc_id                  = var.vpc_id
-  cidr_block              = var.subnet_cidr
+  cidr_block              = var.subnet_cidrs[count.index]
+  availability_zone       = var.azs[count.index]
   map_public_ip_on_launch = var.map_public_ip_on_launch
 
   tags = {
-    Name = var.subnet_name
+    Name = "main-subnet-${count.index + 1}"
+    # EKS requires this specific tag on public subnets so it knows where to put load balancers!
+    "kubernetes.io/role/elb" = "1" 
   }
 }
