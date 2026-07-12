@@ -1,8 +1,13 @@
 module "vpc" {
-  source   = "./modules/VPC"
-  # You can override the default variables here if you ever want to
-  vpc_name = "production-vpc" 
-  vpc_cidr = "10.0.0.0/16"
+  source = "./modules/VPC"
+  # variables...
+}
+
+module "subnet" {
+  source = "./modules/subnet"
+  
+  # This is how the subnet knows which VPC to attach to!
+  vpc_id = module.vpc.vpc_id
 }
 
 module "subnet" {
