@@ -28,3 +28,9 @@ module "ec2" {
   instance_name     = "ubuntu-web-server"
   vm_password       = var.vm_password 
 }
+
+# 4. Amazon EKS Cluster
+module "eks" {
+  source     = "./modules/EKS"
+  subnet_ids = module.subnet.subnet_ids
+}
