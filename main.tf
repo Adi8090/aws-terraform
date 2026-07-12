@@ -21,9 +21,11 @@ module "security_group" {
 # 3. EC2 Instance
 module "ec2" {
   source            = "./modules/EC2"
-  subnet_id         = module.subnet.subnet_id
-  security_group_id = module.security_group.sg_id
   
+  # UPDATE THIS LINE: Grab the first subnet from the new list
+  subnet_id         = module.subnet.subnet_ids[0]
+  
+  security_group_id = module.security_group.sg_id
   instance_type     = "t3.micro" 
   instance_name     = "ubuntu-web-server"
   vm_password       = var.vm_password 

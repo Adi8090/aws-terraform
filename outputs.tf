@@ -9,8 +9,10 @@ output "vpc_id" {
 }
 
 output "subnet_id" {
-  description = "The ID of the public subnet"
-  value       = module.subnet.subnet_id
+  description = "The ID of the first public subnet"
+  
+  # UPDATE THIS LINE: Add the 's' and the [0]
+  value       = module.subnet.subnet_ids[0]
 }
 
 output "security_group_id" {
