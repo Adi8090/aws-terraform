@@ -18,4 +18,12 @@ terraform {
 
 provider "aws" {
   region = var.aws_region
+
 }
+
+# THIS IS THE MAGIC FIX:
+  backend "s3" {
+    bucket = "adi-terraform-state-12345" # Your exact bucket name
+    key    = "aws-infra/terraform.tfstate"
+    region = "ap-south-1"
+  }
