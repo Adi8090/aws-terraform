@@ -1,0 +1,48 @@
+name: "Terraform Manual Destroy"
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm_destroy:
+        description: 'Type "DESTROY" to confirm teardown'
+        required: true
+        default: 'NO'
+
+jobs:
+  terraform-destroy:
+    name: "Terraform Destroy"
+    runs-on: ubuntu-latest
+    
+    # Safety check: Only run if the user explicitly typed DESTROY in the input box
+    if: ${{ github.event.inputs.confirm_destroy == 'DESTROY' }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-south-1
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.15.7" # Matches your state file version
+
+      - name: Terraform Init
+        run: terraform init
+
+      # Validates the code structure before acting
+      - name: Terraform Validate
+        run: terraform validate
+
+      # Generates a speculative plan showing exactly what will be deleted
+      - name: Terraform Plan Destroy
+        run: terraform plan -destroy -out=destroy.tfplan
+
+      # Executes the actual deletion using the generated plan
+      - name: Terraform Destroy Apply
+        run: terraform apply -auto-approve destroy.tfplan
