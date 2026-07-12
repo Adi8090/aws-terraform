@@ -9,7 +9,7 @@ data "aws_ami" "ubuntu" {
 }
 
 resource "aws_instance" "this" {
-  ami                    = "ami-01a00762f46d584a1"   #data.aws_ami.ubuntu.id
+  ami                    = "ami-01a00762f46d584a1"
   instance_type          = var.instance_type
   subnet_id              = var.subnet_id
   vpc_security_group_ids = [var.security_group_id]
