@@ -1,4 +1,4 @@
-name: "Terraform Manual Destroy"
+name: 'Terraform AWS Destroy'
 
 on:
   workflow_dispatch:
@@ -8,13 +8,21 @@ on:
         required: true
         default: 'NO'
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   terraform-destroy:
-    name: "Terraform Destroy"
+    name: 'Terraform Destroy'
     runs-on: ubuntu-latest
     
-    # Safety check: Only run if the user explicitly typed DESTROY in the input box
+    # Safety check: The job will instantly skip if you don't type DESTROY
     if: ${{ github.event.inputs.confirm_destroy == 'DESTROY' }}
+    
+    # Passing the password variable exactly like your apply pipeline
+    env:
+      TF_VAR_vm_password: ${{ secrets.VM_PASSWORD }}
 
     steps:
       - name: Checkout Code
@@ -30,19 +38,10 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.15.7" # Matches your state file version
+          terraform_version: "1.7.0"
 
       - name: Terraform Init
         run: terraform init
 
-      # Validates the code structure before acting
-      - name: Terraform Validate
-        run: terraform validate
-
-      # Generates a speculative plan showing exactly what will be deleted
-      - name: Terraform Plan Destroy
-        run: terraform plan -destroy -out=destroy.tfplan
-
-      # Executes the actual deletion using the generated plan
-      - name: Terraform Destroy Apply
-        run: terraform apply -auto-approve destroy.tfplan
+      - name: Terraform Destroy
+        run: terraform destroy -auto-approve
