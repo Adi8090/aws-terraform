@@ -1,25 +1,25 @@
-variable "vpc_id" {
-  description = "The VPC ID where the subnet will be created"
-  type        = string
-}
+# variable "vpc_id" {
+#   description = "The VPC ID where the subnet will be created"
+#   type        = string
+# }
 
-variable "subnet_cidr" {
-  description = "The CIDR block for the subnet"
-  type        = string
-  default     = "10.0.1.0/24"
-}
+# variable "subnet_cidr" {
+#   description = "The CIDR block for the subnet"
+#   type        = string
+#   default     = "10.0.1.0/24"
+# }
 
-variable "subnet_name" {
-  description = "Name tag for the subnet"
-  type        = string
-  default     = "main-subnet"
-}
+# variable "subnet_name" {
+#   description = "Name tag for the subnet"
+#   type        = string
+#   default     = "main-subnet"
+# }
 
-variable "map_public_ip_on_launch" {
-  description = "Should be true if instances in this subnet should get a public IP"
-  type        = bool
-  default     = true
-}
+# variable "map_public_ip_on_launch" {
+#   description = "Should be true if instances in this subnet should get a public IP"
+#   type        = bool
+#   default     = true
+# }
 
 resource "aws_subnet" "this" {
   count                   = length(var.subnet_cidrs)
