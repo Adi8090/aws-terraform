@@ -24,7 +24,9 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
-          role-to-assume: arn:aws:iam::572556120615:role/Git_admin # Double check this ARN string!
+          # role-to-assume: arn:aws:iam::572556120615:role/Git_admin # Double check this ARN string!
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: ap-south-1
 
       - name: Setup Terraform
