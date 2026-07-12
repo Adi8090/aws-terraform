@@ -7,7 +7,7 @@ variable "cluster_name" {
 variable "cluster_version" {
   description = "Kubernetes version to use"
   type        = string
-  default     = "1.29" # You can update this to the latest stable version AWS supports
+  default     = "1.30" # You can update this to the latest stable version AWS supports
 }
 
 variable "subnet_ids" {
